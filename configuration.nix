@@ -7,11 +7,10 @@
 let
 	unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 	overlays = import ./overlays ;
-  in 
+in 
 {
-	imports =
-	[ # Include the results of the hardware scan.
-		./hardware-configuration.nix
+	imports = [
+		./hardware-configuration.nix # Include the results of the hardware scan.
 		./imports/packages.nix
 		./imports/boot.nix
 	];
@@ -28,9 +27,9 @@ let
 				family = "Iosevka Jackie custom";
 
 				design = [
-				  "sans"
-				  "expanded"
-				  ];
+					"sans"
+					"expanded"
+				];
 			};
 	  		set = "jackiecustom";
 		}) ];
@@ -40,18 +39,15 @@ let
 		};
 	};
 
-  networking.networkmanager.enable = true;
-  networking.useDHCP = false;
-  networking.interfaces.enp9s0.useDHCP = true;
+	networking.networkmanager.enable = true;
+	networking.useDHCP = false;
+	networking.interfaces.enp9s0.useDHCP = true;
   
-  # No network proxy
-
 	services.xserver = {
 		enable = true;
 		desktopManager.plasma5.enable = true;
 		videoDrivers = ["nvidia"];
 		dpi = 150;
-		#windowManager.xmonad.enable = true;
 		windowManager = {
 			xmonad.enable = true;
 			xmonad.enableContribAndExtras = true;
@@ -62,10 +58,8 @@ let
 		enable = true;
 		package = import ./imports/emacs.nix {pkgs = pkgs; };
 	};
-
-	#services.thermald.enable = true; # Help to manage temps
-
-	sound.enable = true; # https://en.wikipedia.org/wiki/Advanced_Linux_Sound_Architecture
+	
+	sound.enable = true;
 	hardware.pulseaudio.enable = true;
 	hardware.bluetooth.enable = true;
 	hardware.bluetooth.package = pkgs.bluezFull;
@@ -97,13 +91,13 @@ let
 		trustedBinaryCaches = [
 			"https://cache.nixos.org"
 			"https://all-hies.cachix.org"
-	];
-	binaryCachePublicKeys = [
-		"cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-		"all-hies.cachix.org-1:JjrzAOEUsD9ZMt8fdFbzo3jNAyEWlPAwdVuHw4RD43k="
-	];
-	trustedUsers = [ "root" "jackie" ];
-  };
+		];
+		binaryCachePublicKeys = [
+			"cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+			"all-hies.cachix.org-1:JjrzAOEUsD9ZMt8fdFbzo3jNAyEWlPAwdVuHw4RD43k="
+		];
+		trustedUsers = [ "root" "jackie" ];
+	};
   
 	nixpkgs.config.allowUnfree = true;
 	nixpkgs.overlays = lib.attrValues overlays;

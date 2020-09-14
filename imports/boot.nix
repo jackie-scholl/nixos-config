@@ -14,7 +14,7 @@
       };
       
       
-      boot.loader = {
+    boot.loader = {
         efi.canTouchEfiVariables = true;
         grub.enable = true;
         grub.efiSupport = true;
@@ -22,6 +22,10 @@
         grub.device = "nodev"; #"/dev/disk/by-path/pci-0000\:01\:00.0-nvme-1";
         grub.extraConfig = "acpi_enforce_resources=lax";
         systemd-boot.enable = true;
-      };
-    
+    };
+    # Set the font earlier in the boot process. Copied from Becca
+    console = {
+        earlySetup = true;
+        keyMap = "us";
+    };
 }

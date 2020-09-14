@@ -5,71 +5,40 @@
 { config, lib, pkgs, ... }:
 
 let
-    unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-    overlays = import ./overlays ;
+	unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+	overlays = import ./overlays ;
   in 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./imports/packages.nix
-      ./imports/boot.nix
-    ];
+	imports =
+	[ # Include the results of the hardware scan.
+		./hardware-configuration.nix
+		./imports/packages.nix
+		./imports/boot.nix
+	];
 
-/*
-  boot.kernelModules = [ "rtl8821ce"  "it87" "coretemp" "aklsdjfjasldki"];
-  boot.kernelPackages = pkgs.linuxPackages;
-  boot.extraModulePackages = [ pkgs.linuxPackages.it87 pkgs.linuxPackages.rtl8821ce ]; 
-  boot.kernelParams = ["acpi_enforce_resources=lax"];
-  boot.kernelPatches = lib.singleton {
-  	name = "hidbattery";
-  	patch = null;
-  	extraConfig = ''
-  		HID_BATTERY_STRENGTH n
-  	'';
-  };
-  
-  
-  boot.loader = {
-    efi.canTouchEfiVariables = true;
-    grub.enable = true;
-    grub.efiSupport = true;
-    grub.useOSProber = true;
-    grub.device = "nodev"; #"/dev/disk/by-path/pci-0000\:01\:00.0-nvme-1";
-    grub.extraConfig = "acpi_enforce_resources=lax";
-    systemd-boot.enable = true;
-  };
-*/
-  # Set the font earlier in the boot process. Copied from Becca
-  console = {
-    earlySetup = true;
-    keyMap = "us";
-  };
-  #boot.tmpOnTmpfs = lib.mkDefault true; # Keep /tmp in RAM
+	documentation = {
+		dev.enable = true;
+		nixos.includeAllModules = true;
+	};
 
-  documentation = {
-    dev.enable = true;
-    nixos.includeAllModules = true;
-  };
+	fonts = {
+		enableDefaultFonts = true;
+		fonts = [ (pkgs.iosevka.override {
+			privateBuildPlan = {
+				family = "Iosevka Jackie custom";
 
-  fonts = {
-    enableDefaultFonts = true;
-    fonts = [ (pkgs.iosevka.override {
-      privateBuildPlan = {
-        family = "Iosevka Jackie custom";
-
-        design = [
-          "sans"
-          "expanded"
-       ];
-      };
-      set = "jackiecustom";
-    }) ];
-    fontconfig.defaultFonts = {
-      emoji = [ "Twitter Color Emoji" "Noto Color Emoji" ];
-      monospace = [ "Hack" "Iosevka"] ;
-    };
-  };
+				design = [
+				  "sans"
+				  "expanded"
+				  ];
+			};
+	  		set = "jackiecustom";
+		}) ];
+		fontconfig.defaultFonts = {
+			emoji = [ "Twitter Color Emoji" "Noto Color Emoji" ];
+			monospace = [ "Hack" "Iosevka"] ;
+		};
+	};
 
   networking.networkmanager.enable = true;
   networking.useDHCP = false;
@@ -77,75 +46,75 @@ let
   
   # No network proxy
 
-  services.xserver = {
-  	enable = true;
-  	desktopManager.plasma5.enable = true;
-  	videoDrivers = ["nvidia"];
-  	dpi = 150;
-  	#windowManager.xmonad.enable = true;
-  	windowManager = {
-  		xmonad.enable = true;
-  		xmonad.enableContribAndExtras = true;
-  	};
+	services.xserver = {
+		enable = true;
+		desktopManager.plasma5.enable = true;
+		videoDrivers = ["nvidia"];
+		dpi = 150;
+		#windowManager.xmonad.enable = true;
+		windowManager = {
+			xmonad.enable = true;
+			xmonad.enableContribAndExtras = true;
+		};
+	};
+	
+	services.emacs = {
+		enable = true;
+		package = import ./imports/emacs.nix {pkgs = pkgs; };
+	};
+
+	#services.thermald.enable = true; # Help to manage temps
+
+	sound.enable = true; # https://en.wikipedia.org/wiki/Advanced_Linux_Sound_Architecture
+	hardware.pulseaudio.enable = true;
+	hardware.bluetooth.enable = true;
+	hardware.bluetooth.package = pkgs.bluezFull;
+
+	services.blueman.enable = true;
+
+	# Select internationalisation properties.
+	i18n.defaultLocale = "en_US.UTF-8";
+
+	# Set your time zone.
+	time.timeZone = "America/New_York";
+	time.hardwareClockInLocalTime = true;
+
+	# Define a user account. Don't forget to set a password with ‘passwd’.
+	users.users.jackie = {
+		isNormalUser = true;
+		description = "Jackie Scholl";
+		extraGroups = [ 
+			"wheel" # Enable ‘sudo’ for the user.
+			"audio"
+			"networkmanager" 
+		];
+		shell = pkgs.fish;
+	};
+  
+	security.sudo.wheelNeedsPassword = false;
+
+	nix = {
+		trustedBinaryCaches = [
+			"https://cache.nixos.org"
+			"https://all-hies.cachix.org"
+	];
+	binaryCachePublicKeys = [
+		"cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+		"all-hies.cachix.org-1:JjrzAOEUsD9ZMt8fdFbzo3jNAyEWlPAwdVuHw4RD43k="
+	];
+	trustedUsers = [ "root" "jackie" ];
   };
-
-  services.emacs = {
-    enable = true;
-    package = import ./imports/emacs.nix {pkgs = pkgs; };
-  };
   
-  #services.thermald.enable = true; # Help to manage temps
-  
-  sound.enable = true; # https://en.wikipedia.org/wiki/Advanced_Linux_Sound_Architecture
-  hardware.pulseaudio.enable = true;
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.package = pkgs.bluezFull;
-    
-  services.blueman.enable = true;
+	nixpkgs.config.allowUnfree = true;
+	nixpkgs.overlays = lib.attrValues overlays;
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  # Set your time zone.
-  time.timeZone = "America/New_York";
-  time.hardwareClockInLocalTime = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.jackie = {
-    isNormalUser = true;
-    description = "Jackie Scholl";
-    extraGroups = [ 
-      "wheel" # Enable ‘sudo’ for the user.
-      "audio"
-      "networkmanager" 
-    ];
-    shell = pkgs.fish;
-  };
-  
-  security.sudo.wheelNeedsPassword = false;
-  
-  nix = {
-    trustedBinaryCaches = [
-      "https://cache.nixos.org"
-      "https://all-hies.cachix.org"
-    ];
-    binaryCachePublicKeys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "all-hies.cachix.org-1:JjrzAOEUsD9ZMt8fdFbzo3jNAyEWlPAwdVuHw4RD43k="
-    ];
-    trustedUsers = [ "root" "jackie" ];
-  };
-  
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = lib.attrValues overlays;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.09"; # Did you read the comment?
+	# This value determines the NixOS release from which the default
+	# settings for stateful data, like file locations and database versions
+	# on your system were taken. It‘s perfectly fine and recommended to leave
+	# this value at the release version of the first install of this system.
+	# Before changing this value read the documentation for this option
+	# (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+	system.stateVersion = "20.09"; # Did you read the comment?
 
 }
 

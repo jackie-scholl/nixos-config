@@ -4,7 +4,6 @@
 
 { config, lib, pkgs, ... }:
 
-
 let
 	unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 	overlays = import ./overlays ;

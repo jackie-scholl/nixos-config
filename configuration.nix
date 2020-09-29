@@ -54,11 +54,6 @@ in
 		};
 	};
 	
-	services.emacs = {
-		enable = true;
-		package = import ./imports/emacs.nix {pkgs = pkgs; };
-	};
-	
 	sound.enable = true;
 	hardware.pulseaudio.enable = true;
 	hardware.bluetooth.enable = true;

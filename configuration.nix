@@ -62,12 +62,13 @@ in
 	sound.enable = true;
 	hardware.pulseaudio.enable = true;
 	hardware.bluetooth.enable = true;
-	hardware.bluetooth.package = pkgs.bluezFull;
-
-	services.blueman.enable = true;
 
 	# Select internationalisation properties.
 	i18n.defaultLocale = "en_US.UTF-8";
+	i18n.inputMethod = {
+		enabled = "ibus";
+		ibus.engines = with pkgs.ibus-engines; [ uniemoji ];
+	};
 
 	# Set your time zone.
 	time.timeZone = "America/New_York";
@@ -98,6 +99,7 @@ in
 		];
 		trustedUsers = [ "root" "jackie" ];
 	};
+
   
 	nixpkgs.config.allowUnfree = true;
 	nixpkgs.overlays = lib.attrValues overlays;

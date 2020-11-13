@@ -1,18 +1,77 @@
-{ pkgs, ... }:
+{ pkgs, unstable, ... }:
 
 {
 	environment.systemPackages = with pkgs; [
+		bash
+		bc
+		binutils
+		bluez
+		cargo
+		chromium
+		citra
+		ddcutil
+		dmidecode
 		dmenu
+		dolphinEmu
+		dzen2
+		exa
+		expect
+		file
 		firefox
 		fish
+		flightgear
+		fstl
+		gcalcli
+		geekbench
+		ghc
 		git
+		gomatrix
+		gparted
+		gzip
+		htop
+		imagemagick
+		jq
+		just
+		#unstable.ktorrent
 		lm_sensors
+		lutris
+		mercurial
+		micro
+		multimc
+		mutt
+		openrgb
+		openttd
+		p7zip
+		pavucontrol
+		phoronix-test-suite
+		python3
+		racket
+		rclone
+		ripgrep
+		rnix-lsp
+		rustc
+		rxvt-unicode
+		scrot
+		shotwell
+		shutter
+		signal-desktop
+		spectacle
+		stack
 		stalonetray
+		steam-run
+		stress
+		unzip
+		vim
 		vlc
+		wally-cli
 		wget
+		wine
+		woeusb
 		xclip
 		xdotool
 		xmobar
+		xsel
+		zip
 		zoom
 	];
 }

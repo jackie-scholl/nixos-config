@@ -35,14 +35,31 @@ in
 		}) ];
 		fontconfig.defaultFonts = {
 			emoji = [ "Twitter Color Emoji" "Noto Color Emoji" ];
-			monospace = [ "Hack" "Iosevka"] ;
+			monospace = [ "Iosevka Jackie custom extended" "Hack" "Iosevka"] ;
 		};
+	};
+
+	# Select internationalisation properties.
+	i18n.defaultLocale = "en_US.UTF-8";
+	i18n.inputMethod = {
+		enabled = "ibus";
+		ibus.engines = with pkgs.ibus-engines; [ uniemoji ];
+	};
+
+	environment.sessionVariables = {
+		TERMINAL = [ "konsole" ];
+		EDITOR = [ "micro" ];
+	};
+
+	systemd.services.fanLighting = {
+		script = "/run/wrappers/bin/sudo /run/current-system/sw/bin/OpenRGB --color BA5040";
+		wantedBy = [ "multi-user.target" ];
 	};
 
 	networking.networkmanager.enable = true;
 	networking.useDHCP = false;
 	networking.interfaces.enp9s0.useDHCP = true;
-  
+
 	services.xserver = {
 		enable = true;
 		desktopManager.plasma5.enable = true;
@@ -53,17 +70,10 @@ in
 			xmonad.enableContribAndExtras = true;
 		};
 	};
-	
+
 	sound.enable = true;
 	hardware.pulseaudio.enable = true;
 	hardware.bluetooth.enable = true;
-
-	# Select internationalisation properties.
-	i18n.defaultLocale = "en_US.UTF-8";
-	i18n.inputMethod = {
-		enabled = "ibus";
-		ibus.engines = with pkgs.ibus-engines; [ uniemoji ];
-	};
 
 	# Set your time zone.
 	time.timeZone = "America/New_York";
@@ -80,7 +90,7 @@ in
 		];
 		shell = pkgs.fish;
 	};
-  
+
 	security.sudo.wheelNeedsPassword = false;
 
 	nix = {
@@ -95,7 +105,6 @@ in
 		trustedUsers = [ "root" "jackie" ];
 	};
 
-  
 	nixpkgs.config.allowUnfree = true;
 	nixpkgs.overlays = lib.attrValues overlays;
 
@@ -106,6 +115,4 @@ in
 	# Before changing this value read the documentation for this option
 	# (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
 	system.stateVersion = "20.09"; # Did you read the comment?
-
 }
-

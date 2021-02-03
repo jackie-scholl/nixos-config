@@ -20,6 +20,11 @@ in
 		nixos.includeAllModules = true;
 	};
 
+	hardware.opengl.driSupport32Bit = true;
+	hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
+	hardware.pulseaudio.support32Bit = true;
+	  
+
 	fonts = {
 		enableDefaultFonts = true;
 		fonts = [ (pkgs.iosevka.override {
@@ -51,6 +56,24 @@ in
 		EDITOR = [ "micro" ];
 	};
 
+    location.latitude = 42.762;
+    location.longitude = -71.226;
+    
+	services.redshift = {
+	    enable = true;
+	    #brightness.day = "1.0";
+	    #brightness.night = "0.2";
+	    #temperature.night = 2000;
+	};
+
+	services.udev.extraRules = ''
+# Rule for all ZSA keyboards
+SUBSYSTEM=="usb", ATTR{idVendor}=="3297", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="1307", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
+
+	'';
+
 	systemd.services.fanLighting = {
 		script = "/run/wrappers/bin/sudo /run/current-system/sw/bin/OpenRGB --color BA5040";
 		wantedBy = [ "multi-user.target" ];
@@ -79,6 +102,8 @@ in
 	time.timeZone = "America/New_York";
 	time.hardwareClockInLocalTime = true;
 
+    users.groups.plugdev = {};
+
 	# Define a user account. Don't forget to set a password with ‘passwd’.
 	users.users.jackie = {
 		isNormalUser = true;
@@ -86,7 +111,8 @@ in
 		extraGroups = [ 
 			"wheel" # Enable ‘sudo’ for the user.
 			"audio"
-			"networkmanager" 
+			"networkmanager"
+			"plugdev"
 		];
 		shell = pkgs.fish;
 	};

@@ -19,10 +19,10 @@
 		file
 		firefox
 		fish
-		flightgear
+#		flightgear
 		fstl
 		gcalcli
-		geekbench
+#		geekbench
 		ghc
 		git
 		gomatrix

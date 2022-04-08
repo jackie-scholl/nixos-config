@@ -15,15 +15,30 @@ in
 		./imports/boot.nix
 	];
 
+	nixpkgs.config.allowBroken = true;
+
 	documentation = {
 		dev.enable = true;
 		nixos.includeAllModules = true;
 	};
 
-	hardware.opengl.driSupport32Bit = true;
-	hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
-	hardware.pulseaudio.support32Bit = true;
-	  
+	system.copySystemConfiguration = true;
+	system.extraSystemBuilderCmds = "ln -s ${./.} $out/full-config";
+
+	services.fprintd.enable = true; # fingerprint sensor
+
+	#hardware.opengl.driSupport32Bit = true;
+	#hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
+	#hardware.pulseaudio.support32Bit = true;
+
+
+	# The global useDHCP flag is deprecated, therefore explicitly set to false here.
+    # Per-interface useDHCP will be mandatory in the future, so this generated config
+    # replicates the default behaviour.
+    networking.useDHCP = false;
+    #networking.interfaces.enp0s13f0u3u4.useDHCP = true;
+    networking.interfaces.wlp170s0.useDHCP = true;
+    networking.networkmanager.enable = true;
 
 	fonts = {
 		enableDefaultFonts = true;
@@ -74,24 +89,24 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
 
 	'';
 
-	systemd.services.fanLighting = {
-		script = "/run/wrappers/bin/sudo /run/current-system/sw/bin/OpenRGB --color BA5040";
-		wantedBy = [ "multi-user.target" ];
-	};
-
-	networking.networkmanager.enable = true;
-	networking.useDHCP = false;
-	networking.interfaces.enp9s0.useDHCP = true;
+	#systemd.services.fanLighting = {
+	#	script = "/run/wrappers/bin/sudo /run/current-system/sw/bin/OpenRGB --color BA5040";
+	#	wantedBy = [ "multi-user.target" ];
+	#};
 
 	services.xserver = {
 		enable = true;
 		desktopManager.plasma5.enable = true;
-		videoDrivers = ["nvidia"];
+		videoDrivers = [
+		#	"displaylink"
+		#	"modesetting"
+		];
+		#videoDrivers = ["nvidia"];
 		dpi = 150;
-		windowManager = {
-			xmonad.enable = true;
-			xmonad.enableContribAndExtras = true;
-		};
+		#windowManager = {
+		#	xmonad.enable = true;
+		#	xmonad.enableContribAndExtras = true;
+		#};
 	};
 
 	sound.enable = true;

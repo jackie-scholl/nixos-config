@@ -18,7 +18,7 @@ in
 		(mercury.recommended {
 		      vpnConfigPath = ./secrets/pritunl/pritunl.ovpn;
 		    })
-		(mercury.wm {})
+		mercury.wm.xmonad
 	];
 
 	nixpkgs.config.allowBroken = true;

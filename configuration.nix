@@ -7,12 +7,18 @@
 let
 	unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 	overlays = import ./overlays ;
+	mercury = import ./mercury ;
 in 
 {
 	imports = [
+		<nixos-hardware/framework>
 		./hardware-configuration.nix # Include the results of the hardware scan.
 		./imports/packages.nix
 		./imports/boot.nix
+		(mercury.recommended {
+		      vpnConfigPath = ./secrets/pritunl/pritunl.ovpn;
+		    })
+		(mercury.wm {})
 	];
 
 	nixpkgs.config.allowBroken = true;
@@ -25,12 +31,11 @@ in
 	system.copySystemConfiguration = true;
 	system.extraSystemBuilderCmds = "ln -s ${./.} $out/full-config";
 
-	services.fprintd.enable = true; # fingerprint sensor
+	services.hardware.bolt.enable = true; # thunderbolt
 
 	#hardware.opengl.driSupport32Bit = true;
 	#hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
 	#hardware.pulseaudio.support32Bit = true;
-
 
 	# The global useDHCP flag is deprecated, therefore explicitly set to false here.
     # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -76,9 +81,6 @@ in
     
 	services.redshift = {
 	    enable = true;
-	    #brightness.day = "1.0";
-	    #brightness.night = "0.2";
-	    #temperature.night = 2000;
 	};
 
 	services.udev.extraRules = ''
@@ -89,25 +91,20 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
 
 	'';
 
-	#systemd.services.fanLighting = {
-	#	script = "/run/wrappers/bin/sudo /run/current-system/sw/bin/OpenRGB --color BA5040";
-	#	wantedBy = [ "multi-user.target" ];
-	#};
-
-	services.xserver = {
-		enable = true;
-		desktopManager.plasma5.enable = true;
-		videoDrivers = [
-		#	"displaylink"
-		#	"modesetting"
-		];
-		#videoDrivers = ["nvidia"];
-		dpi = 150;
-		#windowManager = {
-		#	xmonad.enable = true;
-		#	xmonad.enableContribAndExtras = true;
-		#};
-	};
+	  services.xserver = {
+	    enable = true;
+	    displayManager.defaultSession = "none+xmonad";
+	    windowManager = {
+	      xmonad = {
+	        enable = true;
+	        enableContribAndExtras = true;
+	      };
+	    };
+	    videoDrivers = [
+	    	"displaylink"
+	    	"modesetting"
+	    ];
+	  };
 
 	sound.enable = true;
 	hardware.pulseaudio.enable = true;

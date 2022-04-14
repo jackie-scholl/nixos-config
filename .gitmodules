@@ -1,0 +1,3 @@
+[submodule "mercury"]
+	path = mercury
+	url = git@github.com:MercuryTechnologies/nixos-configuration.git

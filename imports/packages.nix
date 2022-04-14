@@ -30,6 +30,7 @@
 		gzip
 		htop
 		imagemagick
+		inxi
 		jq
 		just
 		#unstable.ktorrent
@@ -37,13 +38,13 @@
 		lutris
 		mercurial
 		micro
-		multimc
 		mutt
 		openrgb
 		openttd
 		p7zip
 		pavucontrol
 		phoronix-test-suite
+		polymc
 		python3
 		racket
 		rclone
@@ -72,6 +73,6 @@
 		xmobar
 		xsel
 		zip
-		zoom
+		zoom-us
 	];
 }

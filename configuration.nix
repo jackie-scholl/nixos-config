@@ -33,16 +33,6 @@ in
 
 	services.hardware.bolt.enable = true; # thunderbolt
 
-	#hardware.opengl.driSupport32Bit = true;
-	#hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
-	#hardware.pulseaudio.support32Bit = true;
-
-	# The global useDHCP flag is deprecated, therefore explicitly set to false here.
-    # Per-interface useDHCP will be mandatory in the future, so this generated config
-    # replicates the default behaviour.
-    networking.useDHCP = false;
-    #networking.interfaces.enp0s13f0u3u4.useDHCP = true;
-    networking.interfaces.wlp170s0.useDHCP = true;
     networking.networkmanager.enable = true;
 
 	fonts = {
@@ -90,21 +80,6 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="1307", GROUP="plugde
 SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
 
 	'';
-
-	  services.xserver = {
-	    enable = true;
-	    displayManager.defaultSession = "none+xmonad";
-	    windowManager = {
-	      xmonad = {
-	        enable = true;
-	        enableContribAndExtras = true;
-	      };
-	    };
-	    videoDrivers = [
-	    	"displaylink"
-	    	"modesetting"
-	    ];
-	  };
 
 	sound.enable = true;
 	hardware.pulseaudio.enable = true;

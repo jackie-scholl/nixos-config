@@ -6,10 +6,13 @@
 		bc
 		binutils
 		bluez
+		brightnessctl
 		cargo
 		chromium
 		citra
+		cryptsetup
 		ddcutil
+		dig
 		dmidecode
 		dmenu
 		dolphinEmu
@@ -34,6 +37,7 @@
 		jq
 		just
 		#unstable.ktorrent
+		konsole
 		lm_sensors
 		lutris
 		mercurial

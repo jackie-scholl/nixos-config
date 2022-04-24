@@ -2,6 +2,7 @@
 
 {
 	environment.systemPackages = with pkgs; [
+		any-nix-shell
 		bash
 		bc
 		binutils
@@ -19,9 +20,11 @@
 		dzen2
 		exa
 		expect
+		feh
 		file
 		firefox
 		fish
+		fishPlugins.foreign-env
 #		flightgear
 		fstl
 		gcalcli
@@ -31,6 +34,7 @@
 		gomatrix
 		gparted
 		gzip
+		haskell.compiler.ghc865Binary
 		htop
 		imagemagick
 		inxi
@@ -39,14 +43,17 @@
 		#unstable.ktorrent
 		konsole
 		lm_sensors
+		lshw
 		lutris
 		mercurial
 		micro
 		mutt
+		nix-top
 		openrgb
 		openttd
 		p7zip
 		pavucontrol
+		pciutils
 		phoronix-test-suite
 		polymc
 		python3
@@ -65,7 +72,9 @@
 		stalonetray
 		steam-run
 		stress
+		#toybox
 		unzip
+		usbutils
 		vim
 		vlc
 		wally-cli

@@ -1,3 +1,4 @@
+
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
@@ -16,7 +17,7 @@ in
 		./imports/packages.nix
 		./imports/boot.nix
 		(mercury.recommended {
-		      vpnConfigPath = ./secrets/pritunl/pritunl.ovpn;
+		      vpnConfigPath = /home/jackie/.secrets/pritunl/pritunl.ovpn;
 		    })
 		mercury.wm.xmonad
 	];
@@ -31,7 +32,9 @@ in
 	system.copySystemConfiguration = true;
 	system.extraSystemBuilderCmds = "ln -s ${./.} $out/full-config";
 
+	services.xserver.libinput.touchpad.tapping = true;
 	services.hardware.bolt.enable = true; # thunderbolt
+	services.tlp.enable = true;
 
     networking.networkmanager.enable = true;
 
@@ -45,6 +48,7 @@ in
 					"sans"
 					"expanded"
 				];
+				ligations.inherits = "haskell";
 			};
 	  		set = "jackiecustom";
 		}) ];
@@ -116,6 +120,9 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
 			"all-hies.cachix.org-1:JjrzAOEUsD9ZMt8fdFbzo3jNAyEWlPAwdVuHw4RD43k="
 		];
 		trustedUsers = [ "root" "jackie" ];
+		extraOptions = ''
+			experimental-features = nix-command flakes
+		'';
 	};
 
 	nixpkgs.config.allowUnfree = true;

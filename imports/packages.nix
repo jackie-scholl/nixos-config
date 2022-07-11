@@ -30,9 +30,12 @@
 		gcalcli
 #		geekbench
 		ghc
+		gh
 		git
+		glib
 		gomatrix
 		gparted
+		gsettings-desktop-schemas
 		gzip
 		haskell.compiler.ghc865Binary
 		htop
@@ -42,6 +45,8 @@
 		just
 		#unstable.ktorrent
 		konsole
+		libnotify
+		libreoffice
 		lm_sensors
 		lshw
 		lutris
@@ -49,6 +54,8 @@
 		micro
 		mutt
 		nix-top
+		nix-direnv
+		opencpn
 		openrgb
 		openttd
 		p7zip
@@ -63,6 +70,7 @@
 		rnix-lsp
 		rustc
 		rxvt-unicode
+		scowl
 		scrot
 		shotwell
 		shutter
@@ -77,6 +85,7 @@
 		usbutils
 		vim
 		vlc
+		v4l-utils
 		wally-cli
 		wget
 		wine

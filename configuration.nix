@@ -16,11 +16,13 @@ in
 		./hardware-configuration.nix # Include the results of the hardware scan.
 		./imports/packages.nix
 		./imports/boot.nix
-		(mercury.recommended {
-		      vpnConfigPath = /home/jackie/.secrets/pritunl/pritunl.ovpn;
-		    })
+		#(mercury.recommended {
+		#      vpnConfigPath = /home/jackie/.secrets/pritunl/pritunl.ovpn;
+		#    })
 		mercury.wm.xmonad
 	];
+
+	services.postgresql.settings.log_statement = "mod";
 
 	nixpkgs.config.allowBroken = true;
 
@@ -32,9 +34,27 @@ in
 	system.copySystemConfiguration = true;
 	system.extraSystemBuilderCmds = "ln -s ${./.} $out/full-config";
 
+  /*services.xserver.xautolock = {
+    enable = true;
+    time = 10;
+    notify = 30;
+  };*/
+  
 	services.xserver.libinput.touchpad.tapping = true;
 	services.hardware.bolt.enable = true; # thunderbolt
 	services.tlp.enable = true;
+
+	services.redshift = {
+	    enable = true;
+	};
+
+	services.udev.extraRules = ''
+# Rule for all ZSA keyboards
+SUBSYSTEM=="usb", ATTR{idVendor}=="3297", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="1307", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
+
+	'';
 
     networking.networkmanager.enable = true;
 
@@ -65,6 +85,8 @@ in
 		ibus.engines = with pkgs.ibus-engines; [ uniemoji ];
 	};
 
+	environment.wordlist.enable = true;
+
 	environment.sessionVariables = {
 		TERMINAL = [ "konsole" ];
 		EDITOR = [ "micro" ];
@@ -73,21 +95,11 @@ in
     location.latitude = 42.762;
     location.longitude = -71.226;
     
-	services.redshift = {
-	    enable = true;
-	};
-
-	services.udev.extraRules = ''
-# Rule for all ZSA keyboards
-SUBSYSTEM=="usb", ATTR{idVendor}=="3297", GROUP="plugdev"
-SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="1307", GROUP="plugdev"
-SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
-
-	'';
 
 	sound.enable = true;
 	hardware.pulseaudio.enable = true;
 	hardware.bluetooth.enable = true;
+	services.blueman.enable = true;
 
 	# Set your time zone.
 	time.timeZone = "America/New_York";
@@ -111,15 +123,15 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
 	security.sudo.wheelNeedsPassword = false;
 
 	nix = {
-		trustedBinaryCaches = [
+		settings.trusted-substituters = [
 			"https://cache.nixos.org"
 			"https://all-hies.cachix.org"
 		];
-		binaryCachePublicKeys = [
+		settings.trusted-public-keys = [
 			"cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
 			"all-hies.cachix.org-1:JjrzAOEUsD9ZMt8fdFbzo3jNAyEWlPAwdVuHw4RD43k="
 		];
-		trustedUsers = [ "root" "jackie" ];
+		settings.trusted-users = [ "root" "jackie" ];
 		extraOptions = ''
 			experimental-features = nix-command flakes
 		'';

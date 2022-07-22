@@ -16,9 +16,19 @@ in
 		./hardware-configuration.nix # Include the results of the hardware scan.
 		./imports/packages.nix
 		./imports/boot.nix
-		#(mercury.recommended {
-		#      vpnConfigPath = /home/jackie/.secrets/pritunl/pritunl.ovpn;
-		#    })
+
+		(mercury.cache {
+		  buildCores = 0;
+		})
+		mercury.certs
+		(mercury.vpn.pritunl {
+      configPath = /home/jackie/.secrets/pritunl/pritunl.ovpn;
+		})
+		(mercury.postgres {
+		  pkgs = pkgs;
+		  postgresPackage = pkgs.postgresql_13;
+		})
+		mercury.aws.aws-mfa
 		mercury.wm.xmonad
 	];
 

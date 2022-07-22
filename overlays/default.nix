@@ -1,4 +1,4 @@
 {
-	it87 = import ./it87.nix;
-	taffybar = import ./taffybar.nix;
+  it87 = import ./it87.nix;
+  taffybar = import ./taffybar.nix;
 }

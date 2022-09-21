@@ -32,6 +32,14 @@ in
 		mercury.wm.xmonad
 	];
 
+
+  programs.steam = {
+      enable = true;
+      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+      dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    };
+
+  
 	services.postgresql.settings.log_statement = "mod";
 
 	nixpkgs.config.allowBroken = true;
@@ -70,7 +78,7 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
 
 	fonts = {
 		enableDefaultFonts = true;
-		fonts = [ (pkgs.iosevka.override {
+		/*fonts = [ (pkgs.iosevka.override {
 			privateBuildPlan = {
 				family = "Iosevka Jackie custom";
 
@@ -81,7 +89,7 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
 				ligations.inherits = "haskell";
 			};
 	  		set = "jackiecustom";
-		}) ];
+		}) ];*/
 		fontconfig.defaultFonts = {
 			emoji = [ "Twitter Color Emoji" "Noto Color Emoji" ];
 			monospace = [ "Iosevka Jackie custom extended" "Hack" "Iosevka"] ;
@@ -112,7 +120,7 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
 	services.blueman.enable = true;
 
 	# Set your time zone.
-	time.timeZone = "America/New_York";
+	time.timeZone = "America/Los_Angeles";
 	time.hardwareClockInLocalTime = true;
 
     users.groups.plugdev = {};

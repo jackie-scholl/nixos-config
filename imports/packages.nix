@@ -14,6 +14,7 @@
 		cryptsetup
 		ddcutil
 		dig
+		direnv
 		dmidecode
 		dmenu
 		dolphinEmu
@@ -55,6 +56,7 @@
 		mutt
 		nix-top
 		nix-direnv
+		obs-studio
 		opencpn
 		openrgb
 		openttd
@@ -78,6 +80,7 @@
 		spectacle
 		stack
 		stalonetray
+		#steam
 		steam-run
 		stress
 		#toybox

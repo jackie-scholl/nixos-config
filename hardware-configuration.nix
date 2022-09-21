@@ -29,7 +29,8 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = lib.mkDefault false;
-  networking.interfaces.wlp170s0.useDHCP = lib.mkDefault true;
+#  networking.interfaces.wlp170s0.useDHCP = lib.mkDefault true;
+  networking.interfaces.wlp170s0.useDHCP = lib.mkDefault false;
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

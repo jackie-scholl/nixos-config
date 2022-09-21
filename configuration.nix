@@ -9,7 +9,7 @@ let
 	unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 	overlays = import ./overlays ;
 	mercury = import ./mercury ;
-in 
+in
 {
 	imports = [
 		<nixos-hardware/framework>
@@ -39,7 +39,7 @@ in
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     };
 
-  
+
 	services.postgresql.settings.log_statement = "mod";
 
 	nixpkgs.config.allowBroken = true;
@@ -57,7 +57,7 @@ in
     time = 10;
     notify = 30;
   };*/
-  
+
 	services.xserver.libinput.touchpad.tapping = true;
 	services.hardware.bolt.enable = true; # thunderbolt
 	services.tlp.enable = true;
@@ -110,9 +110,10 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
 		EDITOR = [ "micro" ];
 	};
 
-    location.latitude = 42.762;
-    location.longitude = -71.226;
-    
+  location.latitude = 42.762;
+  location.longitude = -71.226;
+
+  powerManagement.cpuFreqGovernor = "performance";
 
 	sound.enable = true;
 	hardware.pulseaudio.enable = true;
@@ -129,7 +130,7 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
 	users.users.jackie = {
 		isNormalUser = true;
 		description = "Jackie Scholl";
-		extraGroups = [ 
+		extraGroups = [
 			"wheel" # Enable ‘sudo’ for the user.
 			"audio"
 			"networkmanager"

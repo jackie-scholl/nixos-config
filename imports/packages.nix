@@ -28,6 +28,7 @@
 		fishPlugins.foreign-env
 #		flightgear
 		fstl
+		fzf
 		gcalcli
 #		geekbench
 		ghc

@@ -120,6 +120,8 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="20d6", MODE="0666"
 	hardware.bluetooth.enable = true;
 	services.blueman.enable = true;
 
+  services.fwupd.enable = true;
+
 	# Set your time zone.
 	time.timeZone = "America/Los_Angeles";
 	time.hardwareClockInLocalTime = true;

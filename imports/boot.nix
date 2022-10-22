@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 {
-	boot.kernelPackages = pkgs.linuxPackages_latest;
+	#boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_19_11;
 
 	boot.loader = {
 		efi.canTouchEfiVariables = true;

@@ -8,6 +8,7 @@
 		binutils
 		bluez
 		brightnessctl
+		btop
 		cargo
 		chromium
 		citra
@@ -17,6 +18,7 @@
 		direnv
 		dmidecode
 		dmenu
+		dolphin
 		dolphinEmu
 		dzen2
 		exa
@@ -26,11 +28,9 @@
 		firefox
 		fish
 		fishPlugins.foreign-env
-#		flightgear
 		fstl
 		fzf
 		gcalcli
-#		geekbench
 		ghc
 		gh
 		git
@@ -42,10 +42,10 @@
 		haskell.compiler.ghc865Binary
 		htop
 		imagemagick
+		ipfs
 		inxi
 		jq
 		just
-		#unstable.ktorrent
 		konsole
 		libnotify
 		libreoffice
@@ -55,6 +55,7 @@
 		mercurial
 		micro
 		mutt
+		nixfmt
 		nix-top
 		nix-direnv
 		obs-studio
@@ -65,9 +66,9 @@
 		pavucontrol
 		pciutils
 		phoronix-test-suite
-		polymc
 		python3
 		racket
+		rar
 		rclone
 		ripgrep
 		rnix-lsp
@@ -81,10 +82,10 @@
 		spectacle
 		stack
 		stalonetray
-		#steam
+		steam
 		steam-run
-		stress
-		#toybox
+		stress-ng
+		tailscale
 		unzip
 		usbutils
 		vim
@@ -98,6 +99,7 @@
 		xdotool
 		xmobar
 		xsel
+		yuzu-mainline
 		zip
 		zoom-us
 	];

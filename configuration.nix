@@ -10,7 +10,7 @@ let
   mercury = import ./mercury;
 in {
   imports = [
-    <nixos-hardware/framework>
+    <nixos-hardware/framework/12th-gen-intel>
     ./hardware-configuration.nix # Include the results of the hardware scan.
     ./imports/packages.nix
     ./imports/boot.nix
@@ -54,7 +54,7 @@ in {
 
   services.xserver.libinput.touchpad.tapping = true;
   services.hardware.bolt.enable = true; # thunderbolt
-  services.tlp.enable = true;
+  # services.tlp.enable = true;
   networking.firewall.checkReversePath = "loose";
 
   services.redshift = { enable = true; };
@@ -71,13 +71,18 @@ in {
 
   environment.pathsToLink = [ "/share/nix-direnv" ];
 
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 30d";
+  };
+
   fonts = {
     enableDefaultFonts = true;
     fonts = [
       (pkgs.iosevka.override {
         privateBuildPlan = {
           family = "Iosevka Jackie custom";
-
           design = [ "sans" "expanded" ];
           ligations.inherits = "haskell";
         };
@@ -86,7 +91,7 @@ in {
     ];
     fontconfig.defaultFonts = {
       emoji = [ "Twitter Color Emoji" "Noto Color Emoji" ];
-      monospace = [ "Iosevka Jackie custom extended" "Hack" "Iosevka" ];
+      monospace = [ "Iosevka Jackie custom extended" "Hack" ];
     };
   };
 
@@ -118,6 +123,7 @@ in {
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
+  #time.timeZone = "America/New_York";
   time.hardwareClockInLocalTime = true;
 
   users.groups.plugdev = { };
@@ -134,6 +140,7 @@ in {
     ];
     shell = pkgs.fish;
   };
+  programs.fish.enable = true;
 
   services.tailscale.enable = true;
   #networking.firewall.allowedUDPPorts = [ 41641 53 ];
@@ -152,6 +159,19 @@ in {
 
   hardware.cpu.intel.updateMicrocode = true;
 
+  nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  };
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
+
   #nixpkgs.overlays = [
   #     (self: super: { nix-direnv = super.nix-direnv.override { enableFlakes = true; }; } )
   #    ];
@@ -164,6 +184,7 @@ in {
       "all-hies.cachix.org-1:JjrzAOEUsD9ZMt8fdFbzo3jNAyEWlPAwdVuHw4RD43k="
     ];
     settings.trusted-users = [ "root" "jackie" ];
+    settings.allow-import-from-derivation = true;
     extraOptions = ''
       			experimental-features = nix-command flakes
             keep-outputs = true

@@ -37,6 +37,7 @@
 		glib
 		gomatrix
 		gparted
+		nodePackages."@withgraphite/graphite-cli"
 		gsettings-desktop-schemas
 		gzip
 		haskell.compiler.ghc865Binary
@@ -55,6 +56,7 @@
 		mercurial
 		micro
 		mutt
+		neo-cowsay
 		nixfmt
 		nix-top
 		nix-direnv
@@ -65,7 +67,9 @@
 		p7zip
 		pavucontrol
 		pciutils
+		pgcli
 		phoronix-test-suite
+		powertop
 		python3
 		racket
 		rar
@@ -92,6 +96,7 @@
 		vlc
 		v4l-utils
 		wally-cli
+		watchman
 		wget
 		wine
 		woeusb
